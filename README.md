@@ -1,1 +1,1 @@
-# spring-boot-redis-query-starter
+# spring-boot-redis-lua-starter
