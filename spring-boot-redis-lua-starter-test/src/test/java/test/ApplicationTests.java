@@ -57,7 +57,8 @@ public class ApplicationTests {
 		u.setAge(13);
 		u.setId("dlb3");
 		u.setName("dlb3");
-		redisTemplate.opsForValue().set("u:dlb3", u);
-		Assert.assertEquals(testService.say("dlb3"),u);
+		redisTemplate.opsForValue().set("u:dlb4", u);
+		Assert.assertEquals(testService.say("dlb4"),u);
+		System.out.println(testService.say1("aaa"));
 	}
 }

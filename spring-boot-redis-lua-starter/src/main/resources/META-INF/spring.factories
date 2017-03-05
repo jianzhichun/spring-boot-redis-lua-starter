@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-org.chun.spring.boot.redis.lua.config.RedisLuaAutoConfiguration
+org.chun.spring.boot.redis.lua.config.RedisLuaBeanFactoryPostProcessor

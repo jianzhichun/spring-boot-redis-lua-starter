@@ -31,9 +31,9 @@ import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.data.redis.core.script.ScriptExecutor;
 
 
-@SuppressWarnings({"serial","rawtypes","unchecked","unused"})
-@Configuration
-@EnableConfigurationProperties(RedisLuaConfig.class)
+//@SuppressWarnings({"serial","rawtypes","unchecked","unused"})
+//@Configuration
+//@EnableConfigurationProperties(RedisLuaConfig.class)
 public class RedisLuaAutoConfiguration extends AbstractPointcutAdvisor {
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
