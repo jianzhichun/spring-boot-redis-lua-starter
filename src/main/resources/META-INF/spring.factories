@@ -1,2 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-org.chun.spring.boot.redis.query.config.RedisQueryAutoConfiguration
