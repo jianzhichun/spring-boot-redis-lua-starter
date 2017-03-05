@@ -59,6 +59,7 @@ public class ApplicationTests {
 		u.setName("dlb3");
 		redisTemplate.opsForValue().set("u:dlb4", u);
 		Assert.assertEquals(testService.say("dlb4"),u);
-		System.out.println(testService.say1("aaa"));
+		Object o = testService.say1("aaa");
+		System.out.println(o);
 	}
 }

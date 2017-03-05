@@ -5,10 +5,13 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.chun.spring.boot.redis.lua.RedisLua;
+import org.chun.spring.boot.redis.lua.helper.Defaults;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -36,6 +39,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.util.Assert;
 
+
 @Configuration
 @EnableConfigurationProperties(RedisLuaConfig.class)
 public class RedisLuaBeanFactoryPostProcessor implements BeanFactoryPostProcessor, ApplicationContextAware {
@@ -43,18 +47,18 @@ public class RedisLuaBeanFactoryPostProcessor implements BeanFactoryPostProcesso
 	private static Logger logger = LoggerFactory.getLogger(RedisLuaBeanFactoryPostProcessor.class);
 
 	private ApplicationContext applicationContext;
-	
+
 	@SuppressWarnings("rawtypes")
 	private static RedisTemplate redisTemplate;
-	
-    private static RedisLuaConfig redisLuaConfig;
+
+	private static RedisLuaConfig redisLuaConfig;
 
 	@SuppressWarnings("rawtypes")
 	@Override
 	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
 		redisTemplate = (RedisTemplate) applicationContext.getBean("redisTemplate");
 		redisLuaConfig = applicationContext.getBean(RedisLuaConfig.class);
-//		Assert.notEmpty(redisLuaConfig.getPackageArr());
+		// Assert.notEmpty(redisLuaConfig.getPackageArr());
 		Assert.notNull(redisTemplate);
 		this.applicationContext = applicationContext;
 	}
@@ -116,7 +120,7 @@ public class RedisLuaBeanFactoryPostProcessor implements BeanFactoryPostProcesso
 		@Override
 		public Class<?> getObjectType() {
 			try {
-				if(null == innerClassName)
+				if (null == innerClassName)
 					return null;
 				return Class.forName(innerClassName);
 			} catch (ClassNotFoundException e) {
@@ -139,8 +143,8 @@ public class RedisLuaBeanFactoryPostProcessor implements BeanFactoryPostProcesso
 	static Object invocation(Object proxy, Method method, Object[] arguments, MethodProxy methodProxy)
 			throws Throwable {
 		if (!method.isAnnotationPresent(RedisLua.class)) {
-			if(Modifier.isAbstract(method.getModifiers()))
-				return null;
+			if (Modifier.isAbstract(method.getModifiers()))
+				return method.getReturnType().isPrimitive() ? Defaults.defaultValue(method.getReturnType()) : null;
 			return null != methodProxy ? methodProxy.invokeSuper(proxy, arguments) : method.invoke(proxy, arguments);
 		}
 		RedisLua redisLua = method.getDeclaredAnnotation(RedisLua.class);
@@ -181,4 +185,5 @@ public class RedisLuaBeanFactoryPostProcessor implements BeanFactoryPostProcesso
 			return invocation(proxy, method, objects, methodProxy);
 		}
 	}
+
 }
